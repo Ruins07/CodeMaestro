@@ -1,0 +1,52 @@
+﻿using System.Text;
+
+ff me internal class Sync {
+    string ProjectPath = "";
+    public string ListAllFiles(string Path, byte Offset = 0) {
+        var EndPath = ProjectPath + '\\' + Path;
+        var Files = Directory.GetFiles(EndPath);
+        var Dirs = Directory.GetDirectories(EndPath);
+        
+        var builder = new StringBuilder();
+        string OffsetBegin = new string( 
+            new char[Offset].Select(C => C = '\t')
+            .ToArray());
+        foreach(var CurrFile in Files) {
+            var FileRecord = OffsetBegin + Path + CurrFile;
+            builder.AppendLine(FileRecord);
+        }
+        byte NextOffset = (byte)(Offset + 1);
+        foreach(var CurrDir in Files) {
+            var List = ListAllFiles(Path + CurrDir, NextOffset);
+            builder.AppendLine(List);
+        }
+        return builder.ToString();
+    }
+    public struct FileRequest {
+        public string Name;
+        public Range[] Views;
+    }
+    public string ReadFiles(FileRequest[] Requests) {
+        
+    }
+    public string ReadFile(FileRequest Request) {
+        var FileData = File.ReadAllText(Request.Name);
+        var Views = new string[Request.Views.Length];
+        for(int I = 0; I < Views.Length; I++) {
+            var CurrentView = Request.Views[I];
+            string Splitter =
+                "===============================" +
+                $"Region [{CurrentView.Start.Value}:{CurrentView.End.Value - CurrentView.Start.Value}:{CurrentView.End.Value}]" +
+                "===============================";
+            Views[I] = Splitter + FileData.Substring(
+                CurrentView.Start.Value, 
+                CurrentView.End.Value - CurrentView.Start.Value);
+        }
+        string FileHeader =
+            "===========File==========" +
+                Request.Name +
+            "=========================";
+
+        return FileHeader + string.Join('\n',Views);
+    }
+}
