@@ -1,7 +1,7 @@
 ﻿interface IConnection {
-    Task<string> Send(string Message, 
-        Setting? Setting = null, 
-        Compilation.Message[]? messages = null);
+    Task<string> Send(
+        Compilation.Message[] messages,
+        Setting? Setting = null);
 }
 class ChatData(Block InstructionsBlock) {
     public Setting? Setting;

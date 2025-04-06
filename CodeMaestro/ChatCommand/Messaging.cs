@@ -22,14 +22,16 @@
             return;
         }
         var NextCommand = NextStep.Command;
+        Request(NextCommand.Text);
         Response = await MessagingContext
             .Connection
             .Send(
-                NextCommand.Text,
+                Compilation,
                 EndPointSettings
             );
-
-        var Command = NextCommand.Receiver(Response);
+        
+        Compilation.CurrentData.Acquire(Response);
+        NextCommand.Command.Receiver(Response);
         CommandRun(Command);
     }
     public void UpdateSettings() {

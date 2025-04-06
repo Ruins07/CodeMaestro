@@ -10,5 +10,11 @@
             Src.Files = [.. Files];
             return Src;
         }
+
+        public void Acquire(string Response){
+            PreviousMessages.Add((Section.USER, Request));
+            PreviousMessages.Add((Section.ASSISTENT, Response));
+            Request = string.Empty;
+        }
     }
 }
