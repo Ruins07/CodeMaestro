@@ -26,12 +26,12 @@
         Response = await MessagingContext
             .Connection
             .Send(
-                Compilation,
+                Compilation.Compile(),
                 EndPointSettings
             );
         
         Compilation.CurrentData.Acquire(Response);
-        NextCommand.Command.Receiver(Response);
+        var Command = NextCommand.Receiver(Response);
         CommandRun(Command);
     }
     public void UpdateSettings() {
