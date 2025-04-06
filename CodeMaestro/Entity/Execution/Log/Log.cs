@@ -1,4 +1,4 @@
-﻿partial class Log {
+﻿partial class Log: ICloneable {
     List<Record> Records = [];
     private ushort New = 0;
 
@@ -20,5 +20,11 @@
         if (Size == -1) Records.Clear();
         else if (Size > 0)
             Records = [.. Records.TakeLast(Size)];
+    }
+    public object Clone() {
+        var Src = MemberwiseClone();
+        var SrcLink = (Log)Src;
+        SrcLink.Records = [.. SrcLink.Records];
+        return Src;
     }
 }

@@ -6,15 +6,16 @@
 /// and interface to call custom manager for every command list, which resolve execution
 /// can cancel or change settings and analyze response
 /// </summary>
-class BasicCommand {
-    public struct ControlFlow(ControlCommand ResultCommand = ControlCommand.Continue) {
-        public string Request = string.Empty;
-        public ControlCommand Control = ResultCommand;
-        public Block? Link;
-        public bool NewContext;
-    }
-    public enum ControlCommand { Continue, RepeatBlock, RepeatInstruction, Return, Call, Jump }
+
+public enum ControlCommand { Continue, RepeatBlock, RepeatInstruction, Return, Call, Jump }
+class BasicCommand {    
     public Setting? Setting = null;
     public string Text = string.Empty;
     public Func<string, ControlFlow> Receiver = S => new();
+}
+struct ControlFlow(ControlCommand ResultCommand = ControlCommand.Continue) {
+    public string Request = string.Empty;
+    public ControlCommand Control = ResultCommand;
+    public Block? Link;
+    public bool NewContext, ClearContext;
 }

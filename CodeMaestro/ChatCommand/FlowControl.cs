@@ -1,5 +1,7 @@
 ﻿partial class Messaging {
-    private void Execute() {
+    public void Execute(string Text = "") {
+        if(Compilation is null) Compilation = new();
+        if(Text != string.Empty) Request(Text);
         while (
             !(Stop |=
                 Instruction >= InstructionsBlock

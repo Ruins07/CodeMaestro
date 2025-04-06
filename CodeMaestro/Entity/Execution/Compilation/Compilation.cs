@@ -1,5 +1,5 @@
 ﻿using System.Text;
-partial class Compilation {
+partial class Compilation: ICloneable {
     public Memory SystemMemory = new();
     public Log OperationLog = new();
 
@@ -46,4 +46,12 @@ partial class Compilation {
 
         return [.. List];
     }
+    public object Clone() {
+        var Src = (Compilation)MemberwiseClone();
+        Src.CurrentData = (MessageData)CurrentData.Clone();
+        Src.OperationLog = (Log)OperationLog.Clone();
+        Src.SystemMemory = (Memory)SystemMemory.Clone();
+        return Src;
+    }
+    public Compilation DeepCopy() => (Compilation)Clone();
 }
